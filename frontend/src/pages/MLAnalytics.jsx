@@ -86,9 +86,9 @@ export const MLAnalytics = () => {
     }
   };
 
-  const featureChartData = modelResult
+  const featureChartData = (modelResult && modelResult.feature_importance)
     ? Object.entries(modelResult.feature_importance).map(([key, val]) => ({
-        feature: key.replace(/_/g, ' '),
+        feature: (key || '').replace(/_/g, ' '),
         weight: val
       }))
     : [];
@@ -339,7 +339,7 @@ export const MLAnalytics = () => {
           </div>
         </div>
 
-        {signals.length === 0 ? (
+        {(Array.isArray(signals) ? signals : []).length === 0 ? (
           <div className="py-8 text-center text-xs text-slate-400">
             Insufficient report volume for disproportionality calculations. At least 4 diverse reports required.
           </div>
@@ -358,7 +358,7 @@ export const MLAnalytics = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {signals.map((sig, idx) => (
+                {(Array.isArray(signals) ? signals : []).map((sig, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/60 transition">
                     <td className="py-3.5 px-4 font-bold text-slate-900">{sig.medication_name}</td>
                     <td className="py-3.5 px-4 text-slate-700">{sig.reaction_category}</td>

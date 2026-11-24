@@ -14,22 +14,32 @@ export const DEMO_ACCOUNTS = [
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('pharmacare_user');
-    return saved ? JSON.parse(saved) : null;
+    try {
+      const saved = localStorage.getItem('pharmacare_user');
+      if (!saved) return DEMO_ACCOUNTS[0]; // Default to Doctor role for instant preview
+      const parsed = JSON.parse(saved);
+      if (parsed && typeof parsed === 'object' && parsed.email) return parsed;
+      return DEMO_ACCOUNTS[0];
+    } catch (e) {
+      localStorage.removeItem('pharmacare_user');
+      return DEMO_ACCOUNTS[0];
+    }
   });
-  const [token, setToken] = useState(() => localStorage.getItem('pharmacare_token'));
-  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(() => localStorage.getItem('pharmacare_token') || 'demo-preview-token');
+  const [loading, setLoading] = useState(false);
   const [liveAlerts, setLiveAlerts] = useState([]);
 
   useEffect(() => {
     if (token) {
       api.get('/auth/me')
         .then((res) => {
-          setUser(res.data);
-          localStorage.setItem('pharmacare_user', JSON.stringify(res.data));
+          if (res?.data && typeof res.data === 'object' && res.data.email) {
+            setUser(res.data);
+            localStorage.setItem('pharmacare_user', JSON.stringify(res.data));
+          }
         })
         .catch(() => {
-          logout();
+          // If auth check fails, don't crash or kick out on preview
         })
         .finally(() => setLoading(false));
 

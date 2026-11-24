@@ -192,7 +192,7 @@ export const ADRMonitoring = () => {
             <div className="w-7 h-7 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
             Loading adverse event reports...
           </div>
-        ) : reports.length === 0 ? (
+        ) : (Array.isArray(reports) ? reports : []).length === 0 ? (
           <div className="py-12 text-center text-xs text-slate-500">
             No adverse event reports found matching criteria.
           </div>
@@ -211,48 +211,50 @@ export const ADRMonitoring = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {reports.map((r) => {
-                  const hasReview = r.safety_reviews && r.safety_reviews.length > 0;
+                {(Array.isArray(reports) ? reports : []).map((r) => {
+                  const hasReview = r?.safety_reviews && r.safety_reviews.length > 0;
                   const latestReview = hasReview ? r.safety_reviews[r.safety_reviews.length - 1] : null;
+                  const severity = r?.severity || 'mild';
+                  const status = r?.status || 'pending';
 
                   return (
                     <tr key={r.id} className="hover:bg-slate-50/60 transition">
                       <td className="py-3.5 px-4 font-mono font-semibold text-slate-900">
-                        {r.report_number}
-                        <div className="text-[10px] text-slate-400 font-normal">Onset: {r.onset_date}</div>
+                        {r.report_number || 'ADR-2024'}
+                        <div className="text-[10px] text-slate-400 font-normal">Onset: {r.onset_date || 'N/A'}</div>
                       </td>
                       <td className="py-3.5 px-4">
-                        <div className="font-semibold text-slate-800">{r.patient_name}</div>
-                        <span className="font-mono text-[10px] text-slate-400">{r.patient_mrn}</span>
+                        <div className="font-semibold text-slate-800">{r.patient_name || 'Patient'}</div>
+                        <span className="font-mono text-[10px] text-slate-400">{r.patient_mrn || 'MRN'}</span>
                       </td>
                       <td className="py-3.5 px-4 font-medium text-slate-900">
-                        {r.suspected_medication_name}
+                        {r.suspected_medication_name || 'Suspected Drug'}
                       </td>
                       <td className="py-3.5 px-4 max-w-xs">
-                        <span className="font-semibold text-slate-800">{r.reaction_category}: </span>
+                        <span className="font-semibold text-slate-800">{r.reaction_category || 'General'}: </span>
                         <span className="text-slate-500 text-[11px]">{r.reaction_description}</span>
                       </td>
                       <td className="py-3.5 px-4">
                         <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-semibold text-[10px] uppercase ${
-                          r.severity === 'severe' || r.severity === 'life_threatening'
+                          severity === 'severe' || severity === 'life_threatening'
                             ? 'bg-red-100 text-red-800 border border-red-200'
-                            : r.severity === 'moderate'
+                            : severity === 'moderate'
                             ? 'bg-amber-100 text-amber-800 border border-amber-200'
                             : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
                         }`}>
-                          {r.severity}
+                          {severity}
                         </span>
                       </td>
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-1.5">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
-                            r.status === 'reviewed'
+                            status === 'reviewed'
                               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                              : r.status === 'under_review'
+                              : status === 'under_review'
                               ? 'bg-blue-50 text-blue-700 border border-blue-200'
                               : 'bg-amber-50 text-amber-700 border border-amber-200'
                           }`}>
-                            {r.status.replace('_', ' ')}
+                            {status.replace(/_/g, ' ')}
                           </span>
                         </div>
                         {latestReview && (

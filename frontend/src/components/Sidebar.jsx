@@ -68,7 +68,8 @@ export const Sidebar = () => {
     },
   ];
 
-  const filteredNav = navItems.filter((item) => item.roles.includes(role));
+  const currentRole = role || 'doctor';
+  const filteredNav = navItems.filter((item) => item.roles.includes(currentRole));
 
   return (
     <aside className="w-64 bg-navy-800 text-slate-300 flex flex-col border-r border-navy-700 min-h-screen flex-shrink-0">
@@ -76,14 +77,14 @@ export const Sidebar = () => {
       <div className="p-4 border-b border-navy-700/80 bg-navy-900/60">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center font-bold text-sm">
-            {user?.full_name?.charAt(0) || 'U'}
+            {user?.full_name?.charAt(0) || 'D'}
           </div>
           <div className="overflow-hidden">
-            <h2 className="text-xs font-bold text-white truncate">{user?.full_name}</h2>
+            <h2 className="text-xs font-bold text-white truncate">{user?.full_name || 'Dr. Marcus Thorne'}</h2>
             <div className="flex items-center gap-1.5 mt-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
               <p className="text-[11px] text-slate-400 capitalize truncate">
-                {role} {user?.specialty ? `• ${user.specialty}` : ''}
+                {currentRole} {user?.specialty ? `• ${user.specialty}` : '• Cardiology'}
               </p>
             </div>
           </div>

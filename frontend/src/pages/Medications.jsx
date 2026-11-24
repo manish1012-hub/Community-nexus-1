@@ -267,7 +267,7 @@ export const Medications = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {medications.map((m) => {
+              {(Array.isArray(medications) ? medications : []).map((m) => {
                 const isSelected = selectedForInteraction.includes(m.id);
                 return (
                   <tr key={m.id} className={`hover:bg-slate-50/60 transition ${isSelected ? 'bg-cyan-50/40' : ''}`}>

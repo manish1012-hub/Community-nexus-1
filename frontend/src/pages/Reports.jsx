@@ -163,7 +163,7 @@ export const Reports = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {reportsData.map((r) => (
+                {(Array.isArray(reportsData) ? reportsData : []).map((r) => (
                   <tr key={r.id} className="hover:bg-slate-50">
                     <td className="py-2.5 px-3 font-mono font-medium">{r.report_number}</td>
                     <td className="py-2.5 px-3 font-mono text-slate-600">{r.patient_mrn}</td>
@@ -189,7 +189,7 @@ export const Reports = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {reportsData.map((m) => (
+                {(Array.isArray(reportsData) ? reportsData : []).map((m) => (
                   <tr key={m.id} className="hover:bg-slate-50">
                     <td className="py-2.5 px-3 font-mono text-slate-600">{m.code}</td>
                     <td className="py-2.5 px-3 font-bold text-slate-900">{m.generic_name}</td>

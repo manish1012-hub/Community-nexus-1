@@ -127,7 +127,7 @@ export const IoTSimulator = () => {
               onChange={(e) => setSelectedPatientId(e.target.value)}
               className="w-full px-3 py-2 bg-slate-800/90 border border-slate-700 rounded-xl text-white text-xs focus:ring-2 focus:ring-cyan-500 focus:outline-none"
             >
-              {patients.map((p) => (
+              {(Array.isArray(patients) ? patients : []).map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.full_name} ({p.mrn})
                 </option>
@@ -184,7 +184,7 @@ export const IoTSimulator = () => {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {devices.map((d) => (
+          {(Array.isArray(devices) ? devices : []).map((d) => (
             <div key={d.id} className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -241,7 +241,7 @@ export const IoTSimulator = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {events.map((ev) => (
+              {(Array.isArray(events) ? events : []).map((ev) => (
                 <tr key={ev.id} className="hover:bg-slate-50/60 transition">
                   <td className="py-3 px-4 font-mono text-slate-600">{ev.scheduled_time}</td>
                   <td className="py-3 px-4 font-mono text-slate-900">{ev.dispensed_time || '—'}</td>

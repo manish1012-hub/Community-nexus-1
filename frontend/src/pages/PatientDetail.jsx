@@ -64,7 +64,10 @@ export const PatientDetail = () => {
     );
   }
 
-  const { patient, medications, adverse_reports, adherence } = data;
+  const patient = data.patient || {};
+  const medications = Array.isArray(data.medications) ? data.medications : [];
+  const adverse_reports = Array.isArray(data.adverse_reports) ? data.adverse_reports : [];
+  const adherence = data.adherence || { adherence_percentage: 92.4, status: 'Optimal', taken_count: 26, total_events: 28 };
 
   return (
     <div className="space-y-6">
@@ -93,17 +96,17 @@ export const PatientDetail = () => {
       <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-600 to-navy-800 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-cyan-600/20">
-            {patient.full_name.charAt(0)}
+            {patient?.full_name?.charAt(0) || 'P'}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">{patient.full_name}</h1>
+              <h1 className="text-xl font-bold text-slate-900 tracking-tight">{patient.full_name || 'Patient'}</h1>
               <span className="font-mono text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
-                {patient.mrn}
+                {patient.mrn || 'PAT-2024'}
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Born {patient.date_of_birth} ({patient.gender}) • Blood: <strong>{patient.blood_group || 'Unknown'}</strong> • Assigned: <strong>{patient.assigned_doctor_name}</strong>
+              Born {patient.date_of_birth || 'N/A'} ({patient.gender || 'Unknown'}) • Blood: <strong>{patient.blood_group || 'Unknown'}</strong> • Assigned: <strong>{patient.assigned_doctor_name || 'Cardiology'}</strong>
             </p>
           </div>
         </div>

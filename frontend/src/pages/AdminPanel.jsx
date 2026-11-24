@@ -156,7 +156,7 @@ export const AdminPanel = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {users.map((u) => (
+              {(Array.isArray(users) ? users : []).map((u) => (
                 <tr key={u.id} className="hover:bg-slate-50/60 transition">
                   <td className="py-3 px-4">
                     <div className="font-semibold text-slate-900">{u.full_name}</div>
@@ -238,7 +238,7 @@ export const AdminPanel = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {auditLogs.map((log) => (
+              {(Array.isArray(auditLogs) ? auditLogs : []).map((log) => (
                 <tr key={log.id} className="hover:bg-slate-50">
                   <td className="py-2.5 px-3 font-mono text-[11px] text-slate-500">{new Date(log.timestamp).toLocaleString()}</td>
                   <td className="py-2.5 px-3 font-semibold text-slate-800">{log.action}</td>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Layout } from './components/Layout';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
@@ -38,56 +39,58 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
 export function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+    <ErrorBoundary>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Dashboard />} />
-            <Route path="patients" element={<Patients />} />
-            <Route path="patients/:id" element={<PatientDetail />} />
-            <Route path="medications" element={<Medications />} />
-            <Route path="adr-monitoring" element={<ADRMonitoring />} />
             <Route
-              path="ml-analytics"
+              path="/"
               element={
-                <ProtectedRoute allowedRoles={['admin', 'doctor', 'pharmacist', 'researcher']}>
-                  <MLAnalytics />
+                <ProtectedRoute>
+                  <Layout />
                 </ProtectedRoute>
               }
-            />
-            <Route path="iot-simulator" element={<IoTSimulator />} />
-            <Route
-              path="reports"
-              element={
-                <ProtectedRoute allowedRoles={['admin', 'doctor', 'pharmacist', 'researcher']}>
-                  <Reports />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="admin"
-              element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminPanel />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="patients" element={<Patients />} />
+              <Route path="patients/:id" element={<PatientDetail />} />
+              <Route path="medications" element={<Medications />} />
+              <Route path="adr-monitoring" element={<ADRMonitoring />} />
+              <Route
+                path="ml-analytics"
+                element={
+                  <ProtectedRoute allowedRoles={['admin', 'doctor', 'pharmacist', 'researcher']}>
+                    <MLAnalytics />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="iot-simulator" element={<IoTSimulator />} />
+              <Route
+                path="reports"
+                element={
+                  <ProtectedRoute allowedRoles={['admin', 'doctor', 'pharmacist', 'researcher']}>
+                    <Reports />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin"
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AdminPanel />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

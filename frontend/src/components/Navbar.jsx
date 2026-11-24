@@ -17,6 +17,8 @@ export const Navbar = () => {
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showAlertMenu, setShowAlertMenu] = useState(false);
 
+  const currentRole = role || 'doctor';
+
   const roleColors = {
     admin: 'bg-purple-100 text-purple-800 border-purple-200',
     doctor: 'bg-blue-100 text-blue-800 border-blue-200',
@@ -52,8 +54,8 @@ export const Navbar = () => {
           >
             <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
             <span>Switch Role:</span>
-            <span className={`px-2 py-0.5 rounded text-[11px] font-semibold border ${roleColors[role] || 'bg-slate-100 text-slate-700'}`}>
-              {role.toUpperCase()}
+            <span className={`px-2 py-0.5 rounded text-[11px] font-semibold border ${roleColors[currentRole] || 'bg-slate-100 text-slate-700'}`}>
+              {currentRole.toUpperCase()}
             </span>
             <ChevronDown className="w-3 h-3 text-slate-400" />
           </button>

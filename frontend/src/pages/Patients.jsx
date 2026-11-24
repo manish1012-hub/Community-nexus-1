@@ -144,7 +144,7 @@ export const Patients = () => {
             <div className="w-7 h-7 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
             Loading cohort records...
           </div>
-        ) : patients.length === 0 ? (
+        ) : (Array.isArray(patients) ? patients : []).length === 0 ? (
           <div className="py-12 text-center text-xs text-slate-500">
             No patient records match the selected filters.
           </div>
@@ -163,7 +163,7 @@ export const Patients = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {patients.map((p) => (
+                {(Array.isArray(patients) ? patients : []).map((p) => (
                   <tr key={p.id} className="hover:bg-slate-50/60 transition group">
                     <td className="py-3.5 px-4">
                       <div className="font-semibold text-slate-900 group-hover:text-cyan-600 transition">

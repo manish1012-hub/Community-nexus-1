@@ -10,9 +10,17 @@ class WebSocketService {
       return;
     }
 
+    // Don't attempt to connect to self as WebSocket server on Netlify or Vercel static hosts
+    if (typeof window !== 'undefined' && (window.location.host.includes('netlify.app') || window.location.host.includes('vercel.app'))) {
+      if (!import.meta.env.VITE_WS_URL) {
+        console.log('[WebSocket] Netlify preview mode: real-time stream active when VITE_WS_URL is configured.');
+        return;
+      }
+    }
+
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = window.location.port === '5173' ? '127.0.0.1:8000' : window.location.host;
-    const wsUrl = `${protocol}//${host}/ws/feed`;
+    const wsUrl = import.meta.env.VITE_WS_URL || `${protocol}//${host}/ws/feed`;
 
     try {
       this.ws = new WebSocket(wsUrl);

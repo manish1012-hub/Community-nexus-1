@@ -337,8 +337,8 @@ export const Dashboard = () => {
                   <div className="w-2 h-2 rounded-full bg-cyan-500 mt-1.5 flex-shrink-0"></div>
                   <div>
                     <p className="font-semibold text-slate-800">
-                      {act.action.replace(/_/g, ' ')}
-                      <span className="ml-2 text-[10px] text-slate-500 font-normal">({act.entity})</span>
+                      {(act.action || 'ACTIVITY').replace(/_/g, ' ')}
+                      <span className="ml-2 text-[10px] text-slate-500 font-normal">({act.entity || 'Clinical'})</span>
                     </p>
                     <p className="text-slate-500 text-[11px] mt-0.5">{act.details}</p>
                   </div>
